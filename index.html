@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="IE=edge" http-equiv="X-UA-Compatible">
+	<meta content="initial-scale=1.0, width=device-width" name="viewport">
+	<title>Instagram | Timeline</title>
+
+	<!-- css -->
+	<link href="./css/base.min.css" rel="stylesheet">
+
+	<!-- css for this project -->
+	<link href="./css/project.min.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- favicon -->
+	<!-- ... -->
+
+	<!-- ie -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	<style type="text/css">
+		header{
+			height:400px;max-height:400px;
+			overflow:hidden;;
+		}
+	</style>
+</head>
+<body class="avoid-fout page-brand">
+	<div class="avoid-fout-indicator avoid-fout-indicator-fixed">
+		<div class="progress-circular progress-circular-center">
+			<div class="progress-circular-wrapper">
+				<div class="progress-circular-inner">
+					<div class="progress-circular-left">
+						<div class="progress-circular-spinner"></div>
+					</div>
+					<div class="progress-circular-gap"></div>
+					<div class="progress-circular-right">
+						<div class="progress-circular-spinner"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<header  class="header header-brand">
+		<ul class="nav nav-list pull-left">
+			<li>
+				<a data-toggle="menu" href="#menu">
+					<span class="icon icon-lg">menu</span>
+				</a>
+			</li>
+		</ul>
+		<a class="header-logo margin-left-no" style="font-weight:bold;" href="./">Instagram</a>
+		<ul class="nav nav-list pull-right">
+			<li>
+				<a data-toggle="menu" href="#profile">
+					<span class="access-hide">John Smith</span>
+					<span class="avatar"><img alt="alt text for John Smith avatar" src="images/users/avatar-001.jpg"></span>
+				</a>
+			</li>
+		</ul>
+	</header>
+	<nav aria-hidden="true" class="menu" id="menu" tabindex="-1">
+		<div class="menu-scroll">
+			<div class="menu-content">
+				<a class="menu-logo" href="index.html">Instagram</a>
+				<div class="form-group form-group-label form-group-brand">
+					<div class="row">
+						<div class="col-lg-10 col-lg-offset-1 col-sm-10 col-sm-offset-1">
+							<label class="floating-label" for="search">Search <i class="fa fa-search"></i></label>
+							<input class="form-control" id="search" name="search" type="text">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<nav aria-hidden="true" class="menu menu-right" id="profile" tabindex="-1">
+		<div class="menu-scroll">
+			<div class="menu-top">
+				<div class="menu-top-img">
+					<img alt="John Smith" src="images/samples/landscape.jpg">
+				</div>
+				<div class="menu-top-info">
+					<a class="menu-top-user" href="javascript:void(0)"><span class="avatar pull-left"><img alt="alt text for John Smith avatar" src="images/users/avatar-001.jpg"></span>John Smith</a>
+				</div>
+				<div class="menu-top-info-sub">
+					<small>Some additional information about John Smith</small>
+				</div>
+			</div>
+			<div class="menu-content">
+				<ul class="nav">
+					<li>
+						<a class="waves-attach" href="javascript:void(0)"><span class="icon icon-lg">account_box</span>Profile </a>
+					</li>
+					<li>
+						<a class="waves-attach" href="javascript:void(0)"><span class="icon icon-lg">add_to_photos</span>Upload Photo</a>
+					</li>
+					<li>
+						<a class="waves-attach" href="login.html"><span class="icon icon-lg">exit_to_app</span>Logout</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="content" style="background:#f2f2f2;">
+		<div class="container">
+			<section class="content-inner">
+				<h2 class="content-sub-heading text-center">LATEST POSTS</h2>
+				<div class="card-wrap">
+					<div class="row">
+						<div class="col-lg-3 col-md-4 col-sm-6">
+							<div class="card">
+								<div class="card-main">
+									<div class="card-header">
+										<div class="card-header-side pull-left">
+											<div class="avatar">
+												<img alt="John Smith Avatar" src="images/users/avatar-001.jpg">
+											</div>
+										</div>
+										<div class="card-inner">
+											<span>Some Text!</span>
+										</div>
+									</div>
+									<div class="card-img">
+										<img alt="alt text" src="images/samples/landscape.jpg">
+									</div>
+									<div class="card-inner">
+										<p>
+											Lorem ipsum dolor sit amet.<br>
+											Consectetur adipiscing elit.
+										</p>
+									</div>
+									<div class="card-action">
+										<div class="card-action-btn pull-left">
+											<a class="btn btn-flat waves-attach" href="javascript:void(0)"><span class="icon text-blue">check</span>&nbsp;<span class="text-blue">Button</span></a>
+										</div>
+										<ul class="margin-no nav nav-list pull-right">
+											<li class="dropdown">
+												<a class="dropdown-toggle text-default waves-attach" data-toggle="dropdown"><span class="icon">keyboard_arrow_down</span></a>
+												<ul class="dropdown-menu">
+													<li>
+														<a class="waves-attach" href="javascript:void(0)"><span class="icon margin-right-sm">filter_1</span>&nbsp;Lorem Ipsum</a>
+													</li>
+													<li>
+														<a class="waves-attach" href="javascript:void(0)"><span class="icon margin-right-sm">filter_2</span>&nbsp;Consectetur Adipiscing</a>
+													</li>
+													<li>
+														<a class="waves-attach" href="javascript:void(0)"><span class="icon margin-right-sm">filter_3</span>&nbsp;Sed Ornare</a>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+	<footer class="footer">
+		<div class="container">
+			<p style="font-weight:bold;color:#AAA;">Instagram</p>
+		</div>
+	</footer>
+
+	<!-- js -->
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/base.min.js"></script>
+
+	<!-- js for this project -->
+	<script src="js/project.min.js"></script>
+	<script src="js/jquery.backstretch.min.js"></script>
+    <script type="text/javascript" src="js/jquery.uploadfile.min.js"></script>
+    <script type="text/javascript" src="js/extensions.js"></script>
+    <script type="text/javascript" src="js/newcommon.js"></script>
+	<script type="text/javascript">
+		$('header').backstretch("images/snow.jpg");
+		$(document).ready(function(e){
+			$('form').on('submit',function(ev){
+				ev.preventDefault();
+				submitform($(this),function(data){
+					if(data.response=="success"){
+						setCookie('username',data.username);
+						setCookie('userid',data.userid)
+						window.location.href="index.html"
+					}
+				})
+			})
+		})
+	</script>
+</body>
+</html>
