@@ -1,5 +1,14 @@
-if (getCookie('theuser')=='GUEST' ||  getCookie('theuser') ==''){ window.location.replace('index.html'); }
+if (getCookie('username')=='GUEST' ||  getCookie('username') ==''){ window.location.replace('login.html'); }
+//if (getCookie('theuser')=='GUEST' ||  getCookie('theuser') ==''){ window.location.replace('index.html'); }
 $(document).ready(function(e) {
+	$('.signout').click(function(){
+		bootbox.confirm("Are you sure you want to sign out?", function(result) {
+			if(result==true){window.location.replace('index.html');}
+			else{return false;}
+			return false;
+		}); 
+	})
+	$('.userdiv span').html( getCookie('theuser') +' ' )
 })
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
@@ -67,7 +76,7 @@ function monkeyPatchAutocomplete() {
 		return $( "<li></li>" ).data( "item.autocomplete", item ).append( "<a>" + mynew + "</a>" ).appendTo( ul );
 	};
 }
-function submitformC(mform,callback){
+function submitform(mform,callback){
 	var fdata=JSON.stringify(mform.serializeObject());
 	var m_method=mform.find('#m_method').val();
 	var dataR = ajaxAPICall( m_method, fdata, mform.find('#m_url').val()," application/json");
@@ -75,3 +84,10 @@ function submitformC(mform,callback){
 		callback(data);
 	});
 }; //Submit Form
+function loadactivemenu(classname){
+	$('.sidemenu').find('.'+classname).addClass('active');
+	$('.sidemenu').find('.'+classname).parent('ul').removeClass('collapse');
+	var datafind= $('.sidemenu').find('.'+classname).parents('ul').prop('id'); console.log(datafind);
+	$('[data-target="'+datafind+'"]').addClass('active');
+	
+}

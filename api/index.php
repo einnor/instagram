@@ -8,8 +8,14 @@ global $app;
 $app= new Slim();
 $app->get('/user/logout','logout');
 $app->post('/user/login','login');
+
+//users
 $app->get('/users','getAllUsers');
 $app->post('/users','createUser');
+
+//posts
+$app->get('/posts','getAllPosts');
+$app->post('/posts','createPost');
 
 $app->run();
 
@@ -103,6 +109,24 @@ function createUser(){
 		
 		$_SESSION['userid'] = $userid;
 		$_SESSION['username']	=$reqdata->username;
+
+		$marray['response']="success";
+	}catch(PDOException $e){$marray['error']=$e->getMessage();$marray['response']="fail";}
+	echo json_encode($marray);
+	return true;
+}
+
+function createPost(){
+	$pdo = getConnection();$marray=array();
+	global $app; $request = $app->request();
+	$reqdata = json_decode($request->getBody());
+	try{
+		$ss = "INSERT INTO post(user_id,name,caption) VALUES(?,?,?)";
+		$stmt = $pdo->prepare($ss);$stmt->execute(array(getuserid(),$reqdata->name,$reqdata->caption));
+		$postid = $pdo->lastInsertId();
+
+		$ss = "INSERT INTO post_details(post_id,size,extension,orientation,resolution,dimensions) VALUES(?,?,?,?,?,?)";
+		$stmt = $pdo->prepare($ss);$stmt->execute(array($postid,$reqdata->size,$reqdata->extension,$reqdata->orientation,$reqdata->resolution,$reqdata->dimensions));
 
 		$marray['response']="success";
 	}catch(PDOException $e){$marray['error']=$e->getMessage();$marray['response']="fail";}

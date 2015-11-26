@@ -24,13 +24,14 @@
 	<style type="text/css">
 		header{
 			height:400px;max-height:400px;
-			overflow:hidden;;
 		}
+		.timeposted{color:#999;font-size:12px;}
+		.owner,.numberoflikes,.like,.comment,.numberofcomments{font-size:12px;color:#999;}
 	</style>
 </head>
 <body class="avoid-fout page-brand">
 	<div class="avoid-fout-indicator avoid-fout-indicator-fixed">
-		<div class="progress-circular progress-circular-center">
+		<div class="progress-circular progress-circular-center progress-circular-brand">
 			<div class="progress-circular-wrapper">
 				<div class="progress-circular-inner">
 					<div class="progress-circular-left">
@@ -96,7 +97,7 @@
 						<a class="waves-attach" href="javascript:void(0)"><span class="icon icon-lg">account_box</span>Profile </a>
 					</li>
 					<li>
-						<a class="waves-attach" href="javascript:void(0)"><span class="icon icon-lg">add_to_photos</span>Upload Photo</a>
+						<a class="waves-attach" href="post.html"><span class="icon icon-lg">add_to_photos</span>Upload Photo</a>
 					</li>
 					<li>
 						<a class="waves-attach" href="login.html"><span class="icon icon-lg">exit_to_app</span>Logout</a>
@@ -121,38 +122,19 @@
 											</div>
 										</div>
 										<div class="card-inner">
-											<span>Some Text!</span>
+											<span class="owner">@athmanGude</span><span class="pull-right timeposted"><span class="icon">alarm </span> 5 minuted ago</span>
 										</div>
 									</div>
 									<div class="card-img">
 										<img alt="alt text" src="images/samples/landscape.jpg">
 									</div>
-									<div class="card-inner">
-										<p>
-											Lorem ipsum dolor sit amet.<br>
-											Consectetur adipiscing elit.
-										</p>
-									</div>
 									<div class="card-action">
 										<div class="card-action-btn pull-left">
-											<a class="btn btn-flat waves-attach" href="javascript:void(0)"><span class="icon text-blue">check</span>&nbsp;<span class="text-blue">Button</span></a>
+											<a class="btn btn-flat waves-attach like" href="javascript:void(0)"><span class="icon text-blue">favorite_border</span>&nbsp;<span class="numberoflikes">23 likes</span></a>
 										</div>
-										<ul class="margin-no nav nav-list pull-right">
-											<li class="dropdown">
-												<a class="dropdown-toggle text-default waves-attach" data-toggle="dropdown"><span class="icon">keyboard_arrow_down</span></a>
-												<ul class="dropdown-menu">
-													<li>
-														<a class="waves-attach" href="javascript:void(0)"><span class="icon margin-right-sm">filter_1</span>&nbsp;Lorem Ipsum</a>
-													</li>
-													<li>
-														<a class="waves-attach" href="javascript:void(0)"><span class="icon margin-right-sm">filter_2</span>&nbsp;Consectetur Adipiscing</a>
-													</li>
-													<li>
-														<a class="waves-attach" href="javascript:void(0)"><span class="icon margin-right-sm">filter_3</span>&nbsp;Sed Ornare</a>
-													</li>
-												</ul>
-											</li>
-										</ul>
+										<div class="card-action-btn pull-right">
+											<a class="btn btn-flat waves-attach comment" href="javascript:void(0)"><span class="icon text-blue">comment</span>&nbsp;<span class="numberofcomments">11 comments</span></a>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -177,20 +159,11 @@
 	<script src="js/jquery.backstretch.min.js"></script>
     <script type="text/javascript" src="js/jquery.uploadfile.min.js"></script>
     <script type="text/javascript" src="js/extensions.js"></script>
-    <script type="text/javascript" src="js/newcommon.js"></script>
+    <script type="text/javascript" src="js/newcommon-login.js"></script>
 	<script type="text/javascript">
 		$('header').backstretch("images/snow.jpg");
 		$(document).ready(function(e){
-			$('form').on('submit',function(ev){
-				ev.preventDefault();
-				submitform($(this),function(data){
-					if(data.response=="success"){
-						setCookie('username',data.username);
-						setCookie('userid',data.userid)
-						window.location.href="index.html"
-					}
-				})
-			})
+			
 		})
 	</script>
 </body>

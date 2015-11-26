@@ -41,9 +41,7 @@
 			</div>
 		</div>
 	</div>
-	<header class="header header-brand" style="opacity:0.5;">
-		<span class="header-logo" style="font-weight:bold;">Instagram</span>
-	</header>
+	<span class="header-logo" style="font-weight:bold;color:#fff;margin:20px;">Instagram</span>
 	<div class="content">
 		<div class="container">
 			<div class="row">
@@ -186,7 +184,7 @@
     <script type="text/javascript" src="js/extensions.js"></script>
     <script type="text/javascript" src="js/newcommon.js"></script>
 	<script type="text/javascript">
-		$.backstretch("images/2.jpg");
+		$('body').backstretch("images/snow.jpg");
 		$(document).ready(function(e){
 			$('.ttl').uploadFile({
 				url:"classes/upload.php", fileName:"avatarfile", allowedTypes: "jpg,png,jpeg",showDelete:false, showDone:false,multiple:true,
@@ -211,9 +209,9 @@
 			$('form').on('submit',function(ev){
 				ev.preventDefault();
 				submitform($(this),function(data){
+					setCookie('username',data.username);
+					setCookie('userid',data.userid)
 					if(data.response=="success"){
-						setCookie('username',data.username);
-						setCookie('userid',data.userid)
 						window.location.href="./"
 					}
 				})
