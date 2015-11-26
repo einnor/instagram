@@ -41,114 +41,138 @@
 			</div>
 		</div>
 	</div>
+	<header class="header header-brand" style="opacity:0.5;">
+		<span class="header-logo" style="font-weight:bold;">Instagram</span>
+	</header>
 	<div class="content">
 		<div class="container">
-			<section class="content-inner">
-				<form class="form pull-right" style="background:#fff;padding:20px;" method="post">
-					<input type="hidden" id="m_method" value="POST">
-					<input type="hidden" id="m_url" value="api/users">
-					<h3 style="margin:0px;padding:0px;">Sign Up</h3>
-					<fieldset>
-						<div class="form-group form-group-label form-group-brand">
-							<div class="row">
-								<div class="col-lg-12 col-sm-12">
-									<label class="floating-label" for="first_name">First Name</label>
-									<input class="form-control" id="first_name" name="first_name" type="text">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-group-label form-group-brand">
-							<div class="row">
-								<div class="col-lg-12 col-sm-12">
-									<label class="floating-label" for="second_name">Second Name</label>
-									<input class="form-control" id="second_name" name="second_name" type="text">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-group-label form-group-brand">
-							<div class="row">
-								<div class="col-lg-12 col-sm-12">
-									<label class="floating-label" for="username">Username</label>
-									<input class="form-control" id="username" name="username" type="text">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-group-label form-group-brand">
-							<div class="row">
-								<div class="col-lg-12 col-sm-12">
-									<label class="floating-label" for="password">Password</label>
-									<input class="form-control" id="password" name="password" type="password">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-group-label form-group-brand">
-							<div class="row">
-								<div class="col-lg-12 col-sm-12">
-									<label class="floating-label" for="password-confirm">Confirm Password</label>
-									<input class="form-control" id="password-confirm" name="password-confirm" type="password">
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="row">
-								<div class="col-lg-5 col-md-6 col-sm-12">
-									<label class="form-label" for="dob">Date of Birth</label>
-								</div>
-								<div class="col-lg-7 col-md-6 col-sm-12">
-									<input class="datepicker-adv datepicker-adv-doc-1 form-control" id="dob" name="dob" type="text">
-								</div>
-							</div>
-						</div>
-						<div class="form-group form-group-brand">
-							<div class="row">
-								<div class="col-lg-12 col-sm-12">
-									<div class="media">
-										<div class="media-object pull-left">
-											<label class="form-icon-label" for="email"><span class="icon">mail outline</span></label>
+			<div class="row">
+				<div class="col-lg-4 col-lg-push-4 col-sm-6 col-sm-push-3">
+					<section class="content-inner">
+						<div class="card-wrap">
+							<div class="card">
+								<div class="card-main">
+									<div class="card-header">
+										<div class="card-inner">
+											<h1 class="card-heading">Sign Up</h1>
 										</div>
-										<div class="media-inner">
-											<input class="form-control" id="email" name="email" placeholder="Email Address" type="email">
-										</div>
+									</div>
+									<div class="card-inner">
+										<p class="text-center">
+											<span class="avatar avatar-inline avatar-lg">
+												<img alt="Login" src="./images/users/avatar-001.jpg">
+											</span>
+										</p>
+										<form class="form" method="post">
+											<input type="hidden" id="m_method" value="POST">
+											<input type="hidden" id="m_url" value="api/users">
+											<fieldset>
+												<div class="form-group form-group-label form-group-brand">
+													<div class="row">
+														<div class="col-lg-12 col-sm-12">
+															<label class="floating-label" for="first_name">First Name</label>
+															<input class="form-control" id="first_name" name="first_name" type="text">
+														</div>
+													</div>
+												</div>
+												<div class="form-group form-group-label form-group-brand">
+													<div class="row">
+														<div class="col-lg-12 col-sm-12">
+															<label class="floating-label" for="second_name">Second Name</label>
+															<input class="form-control" id="second_name" name="second_name" type="text">
+														</div>
+													</div>
+												</div>
+												<div class="form-group form-group-label form-group-brand">
+													<div class="row">
+														<div class="col-lg-12 col-sm-12">
+															<label class="floating-label" for="username">Username</label>
+															<input class="form-control" id="username" name="username" type="text">
+														</div>
+													</div>
+												</div>
+												<div class="form-group form-group-label form-group-brand">
+													<div class="row">
+														<div class="col-lg-12 col-sm-12">
+															<label class="floating-label" for="password">Password</label>
+															<input class="form-control" id="password" name="password" type="password">
+														</div>
+													</div>
+												</div>
+												<div class="form-group form-group-label form-group-brand">
+													<div class="row">
+														<div class="col-lg-12 col-sm-12">
+															<label class="floating-label" for="password-confirm">Confirm Password</label>
+															<input class="form-control" id="password-confirm" name="password-confirm" type="password">
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="row">
+														<div class="col-lg-5 col-md-6 col-sm-12">
+															<label class="form-label" for="dob">Date of Birth</label>
+														</div>
+														<div class="col-lg-7 col-md-6 col-sm-12">
+															<input class="datepicker-adv datepicker-adv-doc-1 form-control" id="dob" name="dob" type="text">
+														</div>
+													</div>
+												</div>
+												<div class="form-group form-group-brand">
+													<div class="row">
+														<div class="col-lg-12 col-sm-12">
+															<div class="media">
+																<div class="media-object pull-left">
+																	<label class="form-icon-label" for="email"><span class="icon">mail outline</span></label>
+																</div>
+																<div class="media-inner">
+																	<input class="form-control" id="email" name="email" placeholder="Email Address" type="email">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="row">
+														<div class="col-lg-12 col-sm-12">
+															<div class="media">
+																<div class="media-object pull-left">
+																	<label class="form-icon-label" for="phone"><span class="icon">phone</span></label>
+																</div>
+																<div class="media-inner">
+																	<input class="form-control" id="phone" name="phone" placeholder="Telephone Number" type="tel">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="row">
+														<div class="col-lg-12 col-sm-12">
+															<div class="ttl9 ttl">Upload Avatar</div>
+														</div>
+														<div class="col-lg-12 col-sm-12">
+											                <input type="hidden" id="avatar" name="avatar" value="">
+											                <div class="myimages thumbnail"></div>
+														</div>
+													</div>
+												</div>
+											</fieldset>
+											<div class="form-group-btn">
+												<button class="btn btn-brand waves-attach waves-button waves-light" type="submit">Submit</button>
+											</div>
+										</form>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="form-group">
-							<div class="row">
-								<div class="col-lg-12 col-sm-12">
-									<div class="media">
-										<div class="media-object pull-left">
-											<label class="form-icon-label" for="phone"><span class="icon">phone</span></label>
-										</div>
-										<div class="media-inner">
-											<input class="form-control" id="phone" name="phone" placeholder="Telephone Number" type="tel">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="row">
-								<div class="col-lg-12 col-sm-12">
-									<div class="ttl9 ttl">Upload Avatar</div>
-								</div>
-								<div class="col-lg-12 col-sm-12">
-					                <input type="hidden" id="avatar" name="avatar" value="">
-					                <div class="myimages thumbnail"></div>
-								</div>
-							</div>
-						</div>
-					</fieldset>
-					<div class="form-group-btn">
-						<button class="btn btn-brand waves-attach waves-button waves-light" type="submit">Submit</button>
-					</div>
-				</form>
-			</section>
+					</section>
+				</div>
+			</div>
 		</div>
 	</div>
 	<footer class="footer">
 		<div class="container">
-			<p>Instagram</p>
+			<p style="font-weight:bold;color:#DDD;">Instagram</p>
 		</div>
 	</footer>
 	<!-- js -->
