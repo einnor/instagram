@@ -13,7 +13,7 @@ if(isset($_FILES["postfile"])){
 		$ret['imagetype'] =$fileExtension;
 		$ImageSize 		= $_FILES['postfile']['size']; // Obtain original image size
 		$ret['size'] 	= $ImageSize;
-		//if ($ImageSize>10000000){die(json_encode(array("jquery-upload-file-error"=>'You require an image with a size of NOT more that 10MB. Your Image is Larger');}
+		if ($ImageSize>10000000){die(json_encode(array("jquery-upload-file-error"=>'You require an image with a size of NOT more that 10MB. Your Image is Larger')));}
 		
 		$imagename			= basename( $_FILES["postfile"]["name"] );;
 		$uploadhere			= "imageholder/".$imagename;

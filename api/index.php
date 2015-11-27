@@ -92,8 +92,8 @@ function createUser(){
 		include_once '../classes/PasswordHash.php';
 		$t_hasher = new PasswordHash(8, FALSE);
 		$mypass = $t_hasher->HashPassword($reqdata->password);
-		$ss = "INSERT INTO user(username,email,phone,first_name,second_name,avatar,dob) VALUES(?,?,?,?,?,?,?)";
-		$stmt = $pdo->prepare($ss);$stmt->execute(array($reqdata->username,$reqdata->email,$reqdata->phone,$reqdata->first_name,$reqdata->second_name,$reqdata->avatar,$reqdata->dob));
+		$ss = "INSERT INTO user(username,email,phone,first_name,second_name,avatar,dob,description) VALUES(?,?,?,?,?,?,?,?)";
+		$stmt = $pdo->prepare($ss);$stmt->execute(array($reqdata->username,$reqdata->email,$reqdata->phone,$reqdata->first_name,$reqdata->second_name,$reqdata->avatar,$reqdata->dob,$reqdata->description));
 		$userid = $pdo->lastInsertId();
 		$ss1 = "INSERT INTO account(user_id,password) VALUES(?,?)";
 		$stmt1=$pdo->prepare($ss1);$stmt1->execute(array($userid,$mypass));
@@ -132,6 +132,19 @@ function createPost(){
 	}catch(PDOException $e){$marray['error']=$e->getMessage();$marray['response']="fail";}
 	echo json_encode($marray);
 	return true;
+}
+
+function getAllPosts(){
+	$pdo = getConnection();
+	$marray = array();
+	try{
+		$ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner FROM post p LEFT JOIN user u ON p.user_id=u.id ORDER BY p.id DESC";
+		$stmnt=$pdo->prepare($ss);$stmnt->execute();$resp=array();
+		while($row = $stmnt->fetch(PDO::FETCH_OBJ)) { $resp[]=$row; }
+		$marray['response']=$resp;
+	}catch(PDOExpetion $e){$marray['error']=$e->getMessage();}
+	echo json_encode($marray);
+	return false;
 }
 
 ?>

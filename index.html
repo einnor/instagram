@@ -27,6 +27,9 @@
 		}
 		.timeposted{color:#999;font-size:12px;}
 		.owner,.numberoflikes,.like,.comment,.numberofcomments{font-size:12px;color:#999;}
+		.hidden{display: none;}
+		/*.card-img{min-height: 300px;}*/
+		.card-img img{width:100%;}
 	</style>
 </head>
 <body class="avoid-fout page-brand">
@@ -62,6 +65,8 @@
 				</a>
 			</li>
 		</ul>
+		<h1 class="text-center" style="margin-top:200px;margin-bottom:0px;padding:0px;color:#3F51B5;"><span class="first_name">Ronnie </span> <span class="second_name"> Nyaga</span></h1>
+		<h4 class="text-center" style="margin:0px;padding:0px;color:#3F51B5;">@<span class="username">ronnie_nyaga </span></h4>
 	</header>
 	<nav aria-hidden="true" class="menu" id="menu" tabindex="-1">
 		<div class="menu-scroll">
@@ -109,10 +114,10 @@
 	<div class="content" style="background:#f2f2f2;">
 		<div class="container">
 			<section class="content-inner">
-				<h2 class="content-sub-heading text-center">LATEST POSTS</h2>
+				<h6 class=" text-center" style="color:#AAA;letter-spacing:3px;">LATEST POSTS</h6>
 				<div class="card-wrap">
-					<div class="row">
-						<div class="col-lg-3 col-md-4 col-sm-6">
+					<div class="row module-body">
+						<div class="col-lg-6 col-lg-offset-3 col-md-6-offset-3 col-sm-12 cloner hidden">
 							<div class="card">
 								<div class="card-main">
 									<div class="card-header">
@@ -122,7 +127,7 @@
 											</div>
 										</div>
 										<div class="card-inner">
-											<span class="owner">@athmanGude</span><span class="pull-right timeposted"><span class="icon">alarm </span> 5 minuted ago</span>
+											<span class="owner">@athmanGude</span><span class="pull-right timeposted"><span class="icon">alarm </span> <i></i></span>
 										</div>
 									</div>
 									<div class="card-img">
@@ -163,7 +168,26 @@
 	<script type="text/javascript">
 		$('header').backstretch("images/snow.jpg");
 		$(document).ready(function(e){
-			
+			var dataR = ajaxAPICall("GET","","api/posts","application/json");
+			dataR.success(function(data){
+				$.each(data.response,function(i,item){
+					clonepost(item.id,item.name,item.caption,item.timeposted,item.numberoflikes,item.numberofcomments,item.owner)
+				})
+			})
+			function clonepost(id,filename,caption,timeposted,numberoflikes,numberofcomments,owner){
+				var cloner2 = $('.cloner');
+				cloner2.clone(true,true).appendTo('.module-body');
+				cloner2.removeClass('cloner');
+				var cloner= $('.cloner');
+				cloner.removeClass('hidden');
+				cloner.prop('id',id);
+				cloner.find('.owner').html(owner);
+				cloner.find('.timeposted i').html(timeposted);
+				cloner.find('.card-img img').prop('src',filename.replace('../',''));
+				cloner.find('.numberoflikes').html(numberoflikes);
+				cloner.find('.numberofcomments').html(numberofcomments);
+				return cloner;
+			}
 		})
 	</script>
 </body>
