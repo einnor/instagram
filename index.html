@@ -30,6 +30,7 @@
 		.hidden{display: none;}
 		/*.card-img{min-height: 300px;}*/
 		.card-img img{width:100%;}
+		.hasliked{color:#F12938;}
 	</style>
 </head>
 <body class="avoid-fout page-brand">
@@ -135,7 +136,7 @@
 									</div>
 									<div class="card-action">
 										<div class="card-action-btn pull-left">
-											<a class="btn btn-flat waves-attach like" href="javascript:void(0)"><span class="icon text-blue">favorite_border</span>&nbsp;<span class="numberoflikes">23 likes</span></a>
+											<a class="btn btn-flat waves-attach like" href="javascript:void(0)"><span class="icon text-blue">favorite_border</span></a>&nbsp;<span class="numberoflikes">23 likes</span>
 										</div>
 										<div class="card-action-btn pull-right">
 											<a class="btn btn-flat waves-attach comment" href="javascript:void(0)"><span class="icon text-blue">comment</span>&nbsp;<span class="numberofcomments">11 comments</span></a>
@@ -171,10 +172,35 @@
 			var dataR = ajaxAPICall("GET","","api/posts","application/json");
 			dataR.success(function(data){
 				$.each(data.response,function(i,item){
-					clonepost(item.id,item.name,item.caption,item.timeposted,item.numberoflikes,item.numberofcomments,item.owner)
+					clonepost(item.id,item.name,item.caption,item.timeposted,item.numberoflikes,item.numberofcomments,item.owner,item.hasliked)
 				})
 			})
-			function clonepost(id,filename,caption,timeposted,numberoflikes,numberofcomments,owner){
+
+			$('a.like').on('click',function(ev){
+				ev.preventDefault();
+				if($(this).hasClass('hasliked')){
+					$(this).removeClass('hasliked');$(this).addClass('hasnotliked');
+					$(this).siblings('.numberoflikes').html(parseInt($(this).siblings('.numberoflikes').html())-1)
+					console.log(parseInt($(this).siblings('.numberoflikes').html()))
+					return false;
+				}
+				if($(this).hasClass('hasnotliked')){
+					$(this).removeClass('hasnotliked');$(this).addClass('hasliked');
+					$(this).siblings('.numberoflikes').html(parseInt($(this).siblings('.numberoflikes').html())+1)
+					console.log(parseInt($(this).siblings('.numberoflikes').html()));
+					return false;
+				}
+				var post_id = $(this).closest('.col-lg-6').prop('id');
+				var jsondata = {'post_id':post_id}
+				var fdata = JSON.stringify(jsondata);
+				var dataR = ajaxAPICall("POST",fdata,"api/posts/like/".concat(post_id),"application/json")
+				dataR.success(function(data){
+					if(data.response=="success"){}
+					else{}
+				})
+			})
+
+			function clonepost(id,filename,caption,timeposted,numberoflikes,numberofcomments,owner,hasliked){
 				var cloner2 = $('.cloner');
 				cloner2.clone(true,true).appendTo('.module-body');
 				cloner2.removeClass('cloner');
@@ -186,6 +212,8 @@
 				cloner.find('.card-img img').prop('src',filename.replace('../',''));
 				cloner.find('.numberoflikes').html(numberoflikes);
 				cloner.find('.numberofcomments').html(numberofcomments);
+				if(hasliked=='true'){cloner.find('.like').addClass('hasliked').removeClass('hasnotliked')}
+				if(hasliked==null){cloner.find('.like').addClass('hasnotliked').removeClass('hasliked')}
 				return cloner;
 			}
 		})

@@ -15,6 +15,7 @@ $app->post('/users','createUser');
 
 //posts
 $app->get('/posts','getAllPosts');
+$app->post('/posts/like/:id','likeAPost');
 $app->post('/posts','createPost');
 
 $app->run();
@@ -134,12 +135,41 @@ function createPost(){
 	return true;
 }
 
+function likeAPost($id){
+	$pdo = getConnection();$marray=array();
+	global $app; $request = $app->request();
+	$reqdata = json_decode($request->getBody());
+	try{
+		$ss="SELECT user_id FROM instagram.like WHERE post_id=?";
+		$stmnt=$pdo->prepare($ss);$stmnt->execute(array($id));$resp=array();
+		$row = $stmnt->fetch(PDO::FETCH_ASSOC);
+		if ($stmnt->rowCount()>0){//User has already liked this image
+			$ss = "DELETE FROM instagram.like WHERE user_id=? AND post_id=?";
+			$stmt = $pdo->prepare($ss);$stmt->execute(array(getuserid(),$reqdata->post_id));
+
+			$ss = "UPDATE post SET numberoflikes=numberoflikes-1 WHERE id=?";
+			$stmt = $pdo->prepare($ss);$stmt->execute(array($reqdata->post_id));
+		}else{
+			$ss = "INSERT INTO instagram.like(user_id,post_id) VALUES(?,?)";
+			$stmt = $pdo->prepare($ss);$stmt->execute(array(getuserid(),$reqdata->post_id));
+
+			$ss = "UPDATE post SET numberoflikes=numberoflikes+1 WHERE id=?";
+			$stmt = $pdo->prepare($ss);$stmt->execute(array($reqdata->post_id));
+		}	
+
+		$marray['response']="success";
+	}catch(PDOException $e){$marray['error']=$e->getMessage();$marray['response']="fail";}
+	echo json_encode($marray);
+	return true;
+}
+
+
 function getAllPosts(){
 	$pdo = getConnection();
 	$marray = array();
 	try{
-		$ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner FROM post p LEFT JOIN user u ON p.user_id=u.id ORDER BY p.id DESC";
-		$stmnt=$pdo->prepare($ss);$stmnt->execute();$resp=array();
+		$ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner,(SELECT IF(user_id=?,'true','false') FROM instagram.like WHERE post_id=p.id) AS hasliked FROM post p LEFT JOIN user u ON p.user_id=u.id ORDER BY p.id DESC";
+		$stmnt=$pdo->prepare($ss);$stmnt->execute(array(getuserid()));$resp=array();
 		while($row = $stmnt->fetch(PDO::FETCH_OBJ)) { $resp[]=$row; }
 		$marray['response']=$resp;
 	}catch(PDOExpetion $e){$marray['error']=$e->getMessage();}
