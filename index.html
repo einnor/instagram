@@ -236,7 +236,6 @@
 				cloner.find('.card-img img').prop('src',filename.replace('../',''));
 				cloner.find('.numberoflikes').html(numberoflikes);
 				cloner.find('.numberofcomments').html(numberofcomments);
-				console.log(hasliked)
 				if(hasliked=='true'){cloner.find('.like').addClass('hasliked').removeClass('hasnotliked')}
 				if(hasliked=='false'){cloner.find('.like').addClass('hasnotliked').removeClass('hasliked')}
 				return cloner;
