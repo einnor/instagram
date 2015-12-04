@@ -196,7 +196,8 @@ function getAllPosts(){
 	$pdo = getConnection();
 	$marray = array();
 	try{
-		$ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner,(SELECT IF(user_id=?,'true','false') FROM instagram.like WHERE post_id=p.id) AS hasliked FROM post p LEFT JOIN user u ON p.user_id=u.id ORDER BY p.id DESC";
+		// $ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner,(SELECT IF(user_id=?,'true','false') FROM instagram.like WHERE post_id=p.id) AS hasliked FROM post p LEFT JOIN user u ON p.user_id=u.id ORDER BY p.id DESC";
+		$ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner,CASE WHEN EXISTS (SELECT user_id FROM   instagram.like WHERE  user_id = ? AND post_id=p.id) THEN 'true' ELSE 'false' END AS hasliked FROM post p LEFT JOIN user u ON p.user_id=u.id ORDER BY p.id DESC";
 		$stmnt=$pdo->prepare($ss);$stmnt->execute(array(getuserid()));$resp=array();
 		while($row = $stmnt->fetch(PDO::FETCH_OBJ)) { $resp[]=$row; }
 		$marray['response']=$resp;

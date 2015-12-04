@@ -238,7 +238,7 @@
 				cloner.find('.numberofcomments').html(numberofcomments);
 				console.log(hasliked)
 				if(hasliked=='true'){cloner.find('.like').addClass('hasliked').removeClass('hasnotliked')}
-				if(hasliked==null){cloner.find('.like').addClass('hasnotliked').removeClass('hasliked')}
+				if(hasliked=='false'){cloner.find('.like').addClass('hasnotliked').removeClass('hasliked')}
 				return cloner;
 			}
 		})
