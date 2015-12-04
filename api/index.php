@@ -13,9 +13,12 @@ $app->post('/user/login','login');
 $app->get('/users','getAllUsers');
 $app->post('/users','createUser');
 
-//posts
+//posts & likes and comments
 $app->get('/posts','getAllPosts');
+$app->get('/posts/:id','getPost');
 $app->post('/posts/like/:id','likeAPost');
+$app->post('/posts/comment/:id','AddAComment');
+$app->get('/posts/comments/:id','getComments');
 $app->post('/posts','createPost');
 
 $app->run();
@@ -25,7 +28,7 @@ function login(){$pdo = getConnection();
 	$request = $app->request();
 	$reqdata = json_decode($request->getBody());
 	
-	$ss="SELECT u.id,u.username,a.password FROM user u LEFT JOIN account a ON u.id=a.user_id WHERE u.email=? OR u.username=?";
+	$ss="SELECT u.id,u.first_name,u.second_name,u.username,a.password FROM user u LEFT JOIN account a ON u.id=a.user_id WHERE u.email=? OR u.username=?";
 	$stmt = $pdo->prepare($ss);$stmt->execute(array($reqdata->username,$reqdata->username));
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
 	if ($stmt->rowCount()>0){
@@ -39,16 +42,19 @@ function login(){$pdo = getConnection();
 		}else{
 			$marray['response']		="success";
 			$marray['username']		=$row['username'];
+			$marray['name']		=$row['first_name'].' '.$row['second_name'];
 			$marray['userid']		=$row['id'];
 			
 			$_SESSION['userid'] = NULL;
-			$_SESSION['username'] = NULL;
+			$_SESSION['name'] = NULL;
 			
 			unset($_SESSION['userid']);
 			unset($_SESSION['username']);
+			unset($_SESSION['name']);
 			
 			$_SESSION['userid']		=$row['id'];
 			$_SESSION['username']	=$row['username'];
+			$_SESSION['name']	=$row['first_name'].' '.$row['second_name'];
 
 			echo json_encode($marray);
 			return false;
@@ -69,6 +75,7 @@ function logout(){$pdo = getConnection();
 	
 	unset($_SESSION['userid']);
 	unset($_SESSION['username']);
+	unset($_SESSION['name']);
 }
 
 
@@ -100,16 +107,20 @@ function createUser(){
 		$stmt1=$pdo->prepare($ss1);$stmt1->execute(array($userid,$mypass));
 		
 		$marray['username'] = $reqdata->username;
+		$marray['name'] = $reqdata->first_name.' '.$reqdata->second_name;
 		$marray['userid'] = $userid;
 		
 		$_SESSION['userid'] = NULL;
 		$_SESSION['username'] = NULL;
+		$_SESSION['name'] = NULL;
 		
 		unset($_SESSION['userid']);
 		unset($_SESSION['username']);
+		unset($_SESSION['name']);
 		
 		$_SESSION['userid'] = $userid;
 		$_SESSION['username']	=$reqdata->username;
+		$_SESSION['name']	=$reqdata->first_name.' '.$reqdata->second_name;
 
 		$marray['response']="success";
 	}catch(PDOException $e){$marray['error']=$e->getMessage();$marray['response']="fail";}
@@ -140,8 +151,8 @@ function likeAPost($id){
 	global $app; $request = $app->request();
 	$reqdata = json_decode($request->getBody());
 	try{
-		$ss="SELECT user_id FROM instagram.like WHERE post_id=?";
-		$stmnt=$pdo->prepare($ss);$stmnt->execute(array($id));$resp=array();
+		$ss="SELECT user_id FROM instagram.like WHERE post_id=? AND user_id=?";
+		$stmnt=$pdo->prepare($ss);$stmnt->execute(array($id,getuserid()));$resp=array();
 		$row = $stmnt->fetch(PDO::FETCH_ASSOC);
 		if ($stmnt->rowCount()>0){//User has already liked this image
 			$ss = "DELETE FROM instagram.like WHERE user_id=? AND post_id=?";
@@ -163,6 +174,23 @@ function likeAPost($id){
 	return true;
 }
 
+function AddAComment($id){
+	$pdo = getConnection();$marray=array();
+	global $app; $request = $app->request();
+	$reqdata = json_decode($request->getBody());
+	try{
+		$ss = "INSERT INTO comment(user_id,post_id,body) VALUES(?,?,?)";
+		$stmt = $pdo->prepare($ss);$stmt->execute(array(getuserid(),$id,$reqdata->comment));
+
+		$ss = "UPDATE post SET numberofcomments=numberofcomments+1 WHERE id=?";
+		$stmt = $pdo->prepare($ss);$stmt->execute(array($id));	
+
+		$marray['response']="success";
+	}catch(PDOException $e){$marray['error']=$e->getMessage();$marray['response']="fail";}
+	echo json_encode($marray);
+	return true;
+}
+
 
 function getAllPosts(){
 	$pdo = getConnection();
@@ -177,4 +205,29 @@ function getAllPosts(){
 	return false;
 }
 
+function getPost($id){
+	$pdo = getConnection();
+	$marray = array();
+	try{
+		$ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner,(SELECT IF(user_id=?,'true','false') FROM instagram.like WHERE post_id=p.id) AS hasliked FROM post p LEFT JOIN user u ON p.user_id=u.id WHERE p.id=? ORDER BY p.id DESC";
+		$stmnt=$pdo->prepare($ss);$stmnt->execute(array(getuserid(),$id));$resp=array();
+		while($row = $stmnt->fetch(PDO::FETCH_OBJ)) { $resp[]=$row; }
+		$marray['response']=$resp;
+	}catch(PDOExpetion $e){$marray['error']=$e->getMessage();}
+	echo json_encode($marray);
+	return false;
+}
+
+function getComments($id){
+	$pdo = getConnection();
+	$marray = array();
+	try{
+		$ss="SELECT c.body,c.thedate AS timeposted,u.username AS owner FROM comment c LEFT JOIN user u ON c.user_id=u.id WHERE c.post_id=? ORDER BY c.id DESC";
+		$stmnt=$pdo->prepare($ss);$stmnt->execute(array($id));$resp=array();
+		while($row = $stmnt->fetch(PDO::FETCH_OBJ)) { $resp[]=$row; }
+		$marray['response']=$resp;
+	}catch(PDOExpetion $e){$marray['error']=$e->getMessage();}
+	echo json_encode($marray);
+	return false;
+}
 ?>

@@ -135,6 +135,7 @@
 				submitform($(this),function(data){
 					setCookie('username',data.username);
 					setCookie('userid',data.userid)
+					setCookie('name',data.name)
 					if(data.response=="success"){
 						window.location.href="./"
 					}

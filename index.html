@@ -29,7 +29,7 @@
 		.owner,.numberoflikes,.like,.comment,.numberofcomments{font-size:12px;color:#999;}
 		.hidden{display: none;}
 		/*.card-img{min-height: 300px;}*/
-		.card-img img{width:100%;}
+		.card-img img{width:100%;cursor: pointer;cursor: hand;}
 		.hasliked{color:#F12938;}
 	</style>
 </head>
@@ -66,7 +66,7 @@
 				</a>
 			</li>
 		</ul>
-		<h1 class="text-center" style="margin-top:200px;margin-bottom:0px;padding:0px;color:#3F51B5;"><span class="first_name">Ronnie </span> <span class="second_name"> Nyaga</span></h1>
+		<h1 class="text-center" style="margin-top:200px;margin-bottom:0px;padding:0px;color:#3F51B5;"><span class="loggedinuser">Ronnie Nyaga</span></h1>
 		<h4 class="text-center" style="margin:0px;padding:0px;color:#3F51B5;">@<span class="username">ronnie_nyaga </span></h4>
 	</header>
 	<nav aria-hidden="true" class="menu" id="menu" tabindex="-1">
@@ -91,7 +91,7 @@
 					<img alt="John Smith" src="images/samples/landscape.jpg">
 				</div>
 				<div class="menu-top-info">
-					<a class="menu-top-user" href="javascript:void(0)"><span class="avatar pull-left"><img alt="alt text for John Smith avatar" src="images/users/avatar-001.jpg"></span>John Smith</a>
+					<a class="menu-top-user" href="javascript:void(0)"><span class="avatar pull-left"><img alt="alt text for John Smith avatar" src="images/users/avatar-001.jpg"></span><span class="loggedinuser">John Smith</span></a>
 				</div>
 				<div class="menu-top-info-sub">
 					<small>Some additional information about John Smith</small>
@@ -103,7 +103,7 @@
 						<a class="waves-attach" href="javascript:void(0)"><span class="icon icon-lg">account_box</span>Profile </a>
 					</li>
 					<li>
-						<a class="waves-attach" href="post.html"><span class="icon icon-lg">add_to_photos</span>Upload Photo</a>
+						<a class="waves-attach" href="new-post.html"><span class="icon icon-lg">add_to_photos</span>Upload Photo</a>
 					</li>
 					<li>
 						<a class="waves-attach" href="login.html"><span class="icon icon-lg">exit_to_app</span>Logout</a>
@@ -134,12 +134,15 @@
 									<div class="card-img">
 										<img alt="alt text" src="images/samples/landscape.jpg">
 									</div>
+									<div class="card-inner">
+										<p class="caption">Lorem ipsum dolor sit amet. Consectetur adipiscing elit.</p>
+									</div>
 									<div class="card-action">
 										<div class="card-action-btn pull-left">
 											<a class="btn btn-flat waves-attach like" href="javascript:void(0)"><span class="icon text-blue">favorite_border</span></a>&nbsp;<span class="numberoflikes">23 likes</span>
 										</div>
-										<div class="card-action-btn pull-right">
-											<a class="btn btn-flat waves-attach comment" href="javascript:void(0)"><span class="icon text-blue">comment</span>&nbsp;<span class="numberofcomments">11 comments</span></a>
+										<div class="card-action-btn pull-right" style="padding-right:10px;">
+											<a class="btn btn-flat waves-attach comment" href="javascript:void(0)"><span class="icon text-blue">comment</span></a>&nbsp;<span class="numberofcomments">11 comments</span>
 										</div>
 									</div>
 								</div>
@@ -156,6 +159,12 @@
 		</div>
 	</footer>
 
+	<div class="fbtn-container">
+		<div class="fbtn-inner">
+			<a class="fbtn fbtn-brand fbtn-lg" href="new-post.html"><span class="fbtn-ori icon">add</span></a>
+		</div>
+	</div>
+
 	<!-- js -->
 	<script src="js/jquery-1.11.3.min.js"></script>
 	<script src="js/base.min.js"></script>
@@ -169,6 +178,8 @@
 	<script type="text/javascript">
 		$('header').backstretch("images/snow.jpg");
 		$(document).ready(function(e){
+			$('.loggedinuser').html(getCookie('name'))
+			$('.username').html(getCookie('username'))
 			var dataR = ajaxAPICall("GET","","api/posts","application/json");
 			dataR.success(function(data){
 				$.each(data.response,function(i,item){
@@ -176,28 +187,40 @@
 				})
 			})
 
+			$('.card-img,a.comment').on('click',function(ev){
+				window.open('post.html?'.concat($(this).closest('.col-lg-6').prop('id')), '_blank'); 
+			})
+
 			$('a.like').on('click',function(ev){
 				ev.preventDefault();
 				if($(this).hasClass('hasliked')){
 					$(this).removeClass('hasliked');$(this).addClass('hasnotliked');
 					$(this).siblings('.numberoflikes').html(parseInt($(this).siblings('.numberoflikes').html())-1)
-					console.log(parseInt($(this).siblings('.numberoflikes').html()))
+					// console.log(parseInt($(this).siblings('.numberoflikes').html()))
+					var post_id = $(this).closest('.col-lg-6').prop('id');
+					var jsondata = {'post_id':post_id}
+					var fdata = JSON.stringify(jsondata);
+					var dataR = ajaxAPICall("POST",fdata,"api/posts/like/".concat(post_id),"application/json")
+					dataR.success(function(data){
+						if(data.response=="success"){}
+						else{}
+					})
 					return false;
 				}
 				if($(this).hasClass('hasnotliked')){
 					$(this).removeClass('hasnotliked');$(this).addClass('hasliked');
 					$(this).siblings('.numberoflikes').html(parseInt($(this).siblings('.numberoflikes').html())+1)
-					console.log(parseInt($(this).siblings('.numberoflikes').html()));
+					// console.log(parseInt($(this).siblings('.numberoflikes').html()));
+					var post_id = $(this).closest('.col-lg-6').prop('id');
+					var jsondata = {'post_id':post_id}
+					var fdata = JSON.stringify(jsondata);
+					var dataR = ajaxAPICall("POST",fdata,"api/posts/like/".concat(post_id),"application/json")
+					dataR.success(function(data){
+						if(data.response=="success"){}
+						else{}
+					})
 					return false;
 				}
-				var post_id = $(this).closest('.col-lg-6').prop('id');
-				var jsondata = {'post_id':post_id}
-				var fdata = JSON.stringify(jsondata);
-				var dataR = ajaxAPICall("POST",fdata,"api/posts/like/".concat(post_id),"application/json")
-				dataR.success(function(data){
-					if(data.response=="success"){}
-					else{}
-				})
 			})
 
 			function clonepost(id,filename,caption,timeposted,numberoflikes,numberofcomments,owner,hasliked){
@@ -208,10 +231,12 @@
 				cloner.removeClass('hidden');
 				cloner.prop('id',id);
 				cloner.find('.owner').html(owner);
+				cloner.find('.caption').html(caption);
 				cloner.find('.timeposted i').html(timeposted);
 				cloner.find('.card-img img').prop('src',filename.replace('../',''));
 				cloner.find('.numberoflikes').html(numberoflikes);
 				cloner.find('.numberofcomments').html(numberofcomments);
+				console.log(hasliked)
 				if(hasliked=='true'){cloner.find('.like').addClass('hasliked').removeClass('hasnotliked')}
 				if(hasliked==null){cloner.find('.like').addClass('hasnotliked').removeClass('hasliked')}
 				return cloner;
