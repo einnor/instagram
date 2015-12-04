@@ -128,7 +128,7 @@
 											</div>
 										</div>
 										<div class="card-inner">
-											<span class="owner">@athmanGude</span><span class="pull-right timeposted"><span class="icon">alarm </span> <i></i></span>
+											<span class="owner">@athmanGude</span><span class="pull-right"><i class="timeposted"></i> <span class="icon">alarm</span></span>
 										</div>
 									</div>
 									<div class="card-img">
@@ -167,6 +167,7 @@
 
 	<!-- js -->
 	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/jquery.timeago.js" type="text/javascript"></script>
 	<script src="js/base.min.js"></script>
 
 	<!-- js for this project -->
@@ -185,6 +186,7 @@
 				$.each(data.response,function(i,item){
 					clonepost(item.id,item.name,item.caption,item.timeposted,item.numberoflikes,item.numberofcomments,item.owner,item.hasliked)
 				})
+				$("i.timeposted").timeago();
 			})
 
 			$('.card-img,a.comment').on('click',function(ev){
@@ -232,7 +234,7 @@
 				cloner.prop('id',id);
 				cloner.find('.owner').html(owner);
 				cloner.find('.caption').html(caption);
-				cloner.find('.timeposted i').html(timeposted);
+				cloner.find('.timeposted').prop('title',timeposted);
 				cloner.find('.card-img img').prop('src',filename.replace('../',''));
 				cloner.find('.numberoflikes').html(numberoflikes);
 				cloner.find('.numberofcomments').html(numberofcomments);
