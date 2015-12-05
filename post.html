@@ -200,7 +200,7 @@
 											</div>
 										</div>
 										<div class="card-inner">
-											<span class="owner">@athmanGude</span><span class="pull-right timeposted"><span class="icon">alarm </span> <i></i></span>
+											<span class="owner">@athmanGude</span><span class="pull-right"><i class="timeposted"></i> <span class="icon">alarm</span></span>
 										</div>
 									</div>
 									<div class="card-inner">
@@ -351,7 +351,7 @@
 				cloner.prop('id',id);
 				cloner.find('.owner').html(owner);
 				cloner.find('.comment').html(body);
-				cloner.find('.timeposted i').html(timeposted);
+				cloner.find('.timeposted').prop('title',timeposted);
 				return cloner;
 			}
 		})
