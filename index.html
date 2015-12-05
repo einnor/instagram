@@ -139,10 +139,10 @@
 									</div>
 									<div class="card-action">
 										<div class="card-action-btn pull-left">
-											<a class="btn btn-flat waves-attach like" href="javascript:void(0)"><span class="icon text-blue">favorite_border</span></a>&nbsp;<span class="numberoflikes">23 likes</span>
+											<a class="btn btn-flat waves-attach like" title="LIKE" href="javascript:void(0)"><span class="icon text-blue">favorite_border</span></a>&nbsp;<span class="numberoflikes">23 likes</span>
 										</div>
 										<div class="card-action-btn pull-right" style="padding-right:10px;">
-											<a class="btn btn-flat waves-attach comment" href="javascript:void(0)"><span class="icon text-blue">comment</span></a>&nbsp;<span class="numberofcomments">11 comments</span>
+											<a class="btn btn-flat waves-attach comment" title="COMMENT" href="javascript:void(0)"><span class="icon text-blue">comment</span></a>&nbsp;<span class="numberofcomments">11 comments</span>
 										</div>
 									</div>
 								</div>
@@ -184,7 +184,7 @@
 			var dataR = ajaxAPICall("GET","","api/posts","application/json");
 			dataR.success(function(data){
 				$.each(data.response,function(i,item){
-					clonepost(item.id,item.name,item.caption,item.timeposted,item.numberoflikes,item.numberofcomments,item.owner,item.hasliked)
+					clonepost(item.id,item.name,item.caption,item.timeposted,item.numberoflikes,item.numberofcomments,item.owner,item.hasliked,item.owns)
 				})
 				$("i.timeposted").timeago();
 			})
@@ -257,7 +257,7 @@
 				}
 			})
 
-			function clonepost(id,filename,caption,timeposted,numberoflikes,numberofcomments,owner,hasliked){
+			function clonepost(id,filename,caption,timeposted,numberoflikes,numberofcomments,owner,hasliked,owns){
 				var cloner2 = $('.cloner');
 				cloner2.clone(true,true).appendTo('.module-body');
 				cloner2.removeClass('cloner');

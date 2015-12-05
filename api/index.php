@@ -13,13 +13,14 @@ $app->post('/user/login','login');
 $app->get('/users','getAllUsers');
 $app->post('/users','createUser');
 
-//posts & likes and comments
+//posts & likes & comments & deletes
 $app->get('/posts','getAllPosts');
 $app->get('/posts/:id','getPost');
 $app->post('/posts/like/:id','likeAPost');
 $app->post('/posts/comment/:id','AddAComment');
 $app->get('/posts/comments/:id','getComments');
 $app->post('/posts','createPost');
+$app->delete('/posts/:id','deletePost');
 
 $app->run();
 
@@ -197,7 +198,7 @@ function getAllPosts(){
 	$marray = array();
 	try{
 		// $ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner,(SELECT IF(user_id=?,'true','false') FROM instagram.like WHERE post_id=p.id) AS hasliked FROM post p LEFT JOIN user u ON p.user_id=u.id ORDER BY p.id DESC";
-		$ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner,CASE WHEN EXISTS (SELECT user_id FROM   instagram.like WHERE  user_id = ? AND post_id=p.id) THEN 'true' ELSE 'false' END AS hasliked FROM post p LEFT JOIN user u ON p.user_id=u.id ORDER BY p.id DESC";
+		$ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner,CASE WHEN EXISTS (SELECT user_id FROM  post WHERE  user_id = 3 AND id=p.id) THEN 'true' ELSE 'false' END AS owns,CASE WHEN EXISTS (SELECT user_id FROM   instagram.like WHERE  user_id = ? AND post_id=p.id) THEN 'true' ELSE 'false' END AS hasliked FROM post p LEFT JOIN user u ON p.user_id=u.id ORDER BY p.id DESC";
 		$stmnt=$pdo->prepare($ss);$stmnt->execute(array(getuserid()));$resp=array();
 		while($row = $stmnt->fetch(PDO::FETCH_OBJ)) { $resp[]=$row; }
 		$marray['response']=$resp;
@@ -210,7 +211,7 @@ function getPost($id){
 	$pdo = getConnection();
 	$marray = array();
 	try{
-		$ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner,CASE WHEN EXISTS (SELECT user_id FROM   instagram.like WHERE  user_id = ? AND post_id=p.id) THEN 'true' ELSE 'false' END AS hasliked FROM post p LEFT JOIN user u ON p.user_id=u.id WHERE p.id=? ORDER BY p.id DESC";
+		$ss="SELECT p.id,p.name,p.caption,p.thedate AS timeposted,p.numberofcomments,p.numberoflikes,u.username AS owner,CASE WHEN EXISTS (SELECT user_id FROM  post WHERE  user_id = 3 AND id=p.id) THEN 'true' ELSE 'false' END AS owns,CASE WHEN EXISTS (SELECT user_id FROM   instagram.like WHERE  user_id = ? AND post_id=p.id) THEN 'true' ELSE 'false' END AS hasliked FROM post p LEFT JOIN user u ON p.user_id=u.id WHERE p.id=? ORDER BY p.id DESC";
 		$stmnt=$pdo->prepare($ss);$stmnt->execute(array(getuserid(),$id));$resp=array();
 		while($row = $stmnt->fetch(PDO::FETCH_OBJ)) { $resp[]=$row; }
 		$marray['response']=$resp;
@@ -231,4 +232,17 @@ function getComments($id){
 	echo json_encode($marray);
 	return false;
 }
+
+function deletePost($id){
+	$pdo = getConnection();
+	$marray = array();
+	try{
+		$ss="DELETE FROM post WHERE id=?";
+		$stmnt=$pdo->prepare($ss);$stmnt->execute(array($id));
+		$marray['response']="success";
+	}catch(PDOExpetion $e){$marray['error']=$e->getMessage();$marray['response']="fail";}
+	echo json_encode($marray);
+	return false;
+}
+
 ?>

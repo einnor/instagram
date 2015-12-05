@@ -26,6 +26,7 @@
 			height:50px;max-height:50px;
 		}
 		.timeposted{color:#999;font-size:12px;}
+		.deletepost{color:red;font-size:12px;}
 		.owner,.numberoflikes,.like,.comment,.numberofcomments{font-size:12px;color:#999;}
 		.hidden{display: none;}
 		/*.card-img{min-height: 300px;}*/
@@ -125,7 +126,7 @@
 											</div>
 										</div>
 										<div class="card-inner">
-											<span class="owner">@athmanGude</span><span class="pull-right timeposted"><span class="icon">alarm </span> <i></i></span>
+											<span class="owner">@athmanGude</span><span class="pull-right"><i class="timeposted"></i> <span class="icon">alarm</span></span>
 										</div>
 									</div>
 									<div class="card-img">
@@ -136,10 +137,10 @@
 									</div>
 									<div class="card-action">
 										<div class="card-action-btn pull-left">
-											<a class="btn btn-flat waves-attach like" href="javascript:void(0)"><span class="icon text-blue">favorite_border</span></a>&nbsp;<span class="numberoflikes">23 likes</span>
+											<a class="btn btn-flat waves-attach like" title="LIKE" href="javascript:void(0)"><span class="icon text-blue">favorite_border</span></a>&nbsp;<span class="numberoflikes">23 likes</span>
 										</div>
-										<div class="card-action-btn pull-right" style="padding-right:10px;">
-											<a class="btn btn-flat waves-attach comment" href="javascript:void(0)"><span class="icon text-blue">comment</span></a>&nbsp;<span class="numberofcomments">11 comments</span>
+										<div class="card-action-btn pull-right delete hidden" style="padding-right:10px;">
+											<a class="btn btn-flat waves-attach deletepost" title="DELETE" data-toggle="modal" href="#modal"><span class="icon text-blue">delete</span></a>
 										</div>
 									</div>
 								</div>
@@ -152,11 +153,11 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-header">
-										<div class="card-header-side pull-left">
+										<!-- <div class="card-header-side pull-left">
 											<div class="avatar">
 												<img alt="John Smith Avatar" src="images/users/avatar-001.jpg">
 											</div>
-										</div>
+										</div> -->
 										<div class="card-inner">
 											<form class="form" method="post">
 												<input type="hidden" id="m_method" value="POST">
@@ -226,8 +227,26 @@
 		</div>
 	</div>
 
+	<div aria-hidden="true" class="modal fade" id="modal" role="dialog" tabindex="-1">
+		<div class="modal-dialog modal-xs">
+			<div class="modal-content">
+				<div class="modal-heading">
+					<a class="modal-close" data-dismiss="modal">&times;</a>
+					<h2 class="modal-title">Delete Post</h2>
+				</div>
+				<div class="modal-inner">
+					<p>Are you ssure you want to delete this post?</p>
+				</div>
+				<div class="modal-footer">
+					<p class="text-right"><button class="btn btn-flat btn-brand waves-attach" data-dismiss="modal" type="button">Close</button><button class="btn btn-flat btn-brand waves-attach delete" data-dismiss="modal" type="button">OK</button></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- js -->
 	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/jquery.timeago.js" type="text/javascript"></script>
 	<script src="js/base.min.js"></script>
 
 	<!-- js for this project -->
@@ -252,14 +271,23 @@
 			var dataR = ajaxAPICall("GET","","api/posts/".concat(post_id),"application/json");
 			dataR.success(function(data){
 				$.each(data.response,function(i,item){
-					clonepost(item.id,item.name,item.caption,item.timeposted,item.numberoflikes,item.numberofcomments,item.owner,item.hasliked)
+					clonepost(item.id,item.name,item.caption,item.timeposted,item.numberoflikes,item.numberofcomments,item.owner,item.hasliked,item.owns)
 				})
+				$("i.timeposted").timeago();
 			})
 			var dataR1 = ajaxAPICall("GET","","api/posts/comments/".concat(post_id),"application/json");
 			dataR1.success(function(data){
 				if(data.response.length==0){$('h6').html('NO COMMENTS FOR THIS POST');}
 				$.each(data.response,function(i,item){
 					clonecomment(item.id,item.owner,item.body,item.timeposted)
+				})
+			})
+
+			$('.modal-footer .delete').on('click',function(ev){
+				var dataR = ajaxAPICall("DELETE","","api/posts/".concat(post_id),"application/json");
+				dataR.success(function(data){
+					if(data.response=="success"){window.location.href="./"}
+					if(data.response=="fails"){}
 				})
 			})
 
@@ -295,7 +323,7 @@
 				}
 			})
 
-			function clonepost(id,filename,caption,timeposted,numberoflikes,numberofcomments,owner,hasliked){
+			function clonepost(id,filename,caption,timeposted,numberoflikes,numberofcomments,owner,hasliked,owns){
 				var cloner2 = $('.cloner');
 				cloner2.clone(true,true).appendTo('.module-body');
 				cloner2.removeClass('cloner');
@@ -304,12 +332,14 @@
 				cloner.prop('id',id);
 				cloner.find('.owner').html(owner);
 				cloner.find('.caption').html(caption);
-				cloner.find('.timeposted i').html(timeposted);
+				cloner.find('.timeposted').prop('title',timeposted);
 				cloner.find('.card-img img').prop('src',filename.replace('../',''));
 				cloner.find('.numberoflikes').html(numberoflikes);
 				cloner.find('.numberofcomments').html(numberofcomments);
 				if(hasliked=='true'){cloner.find('.like').addClass('hasliked').removeClass('hasnotliked')}
 				if(hasliked=='false'){cloner.find('.like').addClass('hasnotliked').removeClass('hasliked')}
+				if(owns=='true'){cloner.find('.delete').removeClass('hidden')}
+				if(owns=='false'){}
 				return cloner;
 			}
 			function clonecomment(id,owner,body,timeposted){
